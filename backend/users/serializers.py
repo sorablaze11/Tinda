@@ -25,43 +25,42 @@ class UserSerializer(serializers.ModelSerializer):
 
 
 class UserDetailsSerializer(serializers.ModelSerializer):
-    # def create(self, validated_data):
-    #     user = User.objects.create_user(validated_data['name'], validated_data['age'],
-    #          validated_data['gender'], validated_data['bio'], validated_data['images'], validated_data['last_login'])
-    #     return users
 
     class Meta:
-        model = UserDetials
-        fields = ('name', 'age', 'gender', 'bio', 'images', 'last_login')
+        model = UserDetails
+        fields = ('id', 'name', 'age', 'gender', 'bio', 'images', 'last_login')
+        # fields = '__all__'
 
 
 class UserPreferencesSerializer(serializers.ModelSerializer):
     class Meta:
         model = UserPreferences
-        fields = ('prefer_gender', 'min_age', 'max_age', 'min_distance', 'max_distance')
+        fields = ('id', 'prefer_gender', 'min_age', 'max_age', 'min_distance', 'max_distance')
+        # fields = '__all__'
 
 
 class LocationSerializer(serializers.ModelSerializer):
     class Meta:
         model = Location
-        fields = ('location_x', 'location_y', 'zone')
+        fields = ('id', 'location_x', 'location_y', 'zone')
+        # fields = '__all__'
 
 
-class UserConnectionsSerializer(serializers.ModelSerializer):
+# class UserConnectionsSerializer(serializers.ModelSerializer):
 
-    class Meta:
-        model = UserConnections
-        fields = ('user_id', 'connected_user_id')
+#     class Meta:
+#         model = UserConnections
+#         fields = ('user_id', 'connected_user_id')
 
 
-class NotificationSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Notifications
-        fields = ('user_id', 'notification', 'not_id')
+# class NotificationSerializer(serializers.ModelSerializer):
+#     class Meta:
+#         model = Notifications
+#         fields = ('user_id', 'notification', 'not_id')
 
 
 class UserInfoMappingSerializer(serializers.ModelSerializer):
     class Meta:
         model = UserInfoMapping
-        fields = ('user_id','user_details_id', 'user_preferences_id', 'user_location_id', 'user_connections_id', 'notification_id')
-        
+        fields = ('id', 'user_id', 'user_details_id', 'user_preferences_id', 'user_location_id')
+        # fields = '__all__'
