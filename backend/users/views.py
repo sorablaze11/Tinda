@@ -82,7 +82,8 @@ class UserCreate(APIView):
 class UserLogin(APIView):
     permission_classes = [AllowAny]
 
-    def get(self, request, format='json'):
+    def post(self, request, format='json'):
+        print(request.data)
         username = request.data.get("username")
         password = request.data.get("password")
         if username is None or password is None:
@@ -106,12 +107,19 @@ class UserLogout(APIView):
 
 
 class AuthenticatedView(APIView):
+    # Class for allowing user to view it's personal detials and update it.
     permission_classes = [IsAuthenticated, IsOwner]
 
     def get(self, request):
-        print(request.user)
+        x = request.user.userinfomapping_set.get(pk=request.user.id).user_details_id
+        x.name = "SAS"
+        x.save()
         serializer = UserSerializer(request.user)
         return Response(serializer.data)
+
+    # For updating the user detials
+    def post(self, request):
+        pass
 
 
 # class UserDetialsView(APIView):
