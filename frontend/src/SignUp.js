@@ -52,8 +52,9 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-export default function SignUp() {
+export default function SignUp(props) {
   const classes = useStyles();
+  console.log("SAS");
 
   return (
     <Container component="main" maxWidth="xs">

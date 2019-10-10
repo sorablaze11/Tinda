@@ -2,6 +2,9 @@ import React, { Component } from "react";
 import PropTypes from "prop-types";
 
 export class AuthenticatedPage extends Component {
+  componentWillMount() {
+    console.log("componentWillMount AuthenticatedApp");
+  }
   render() {
     return (
       <div>

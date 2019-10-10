@@ -67,22 +67,6 @@ const Login = props => {
     if (props.logged_in) props.history.push("/authenticatedview");
   }, []);
 
-  // function handleSubmit(event) {
-  //   var payload = {
-  //     username: state.username,
-  //     password: state.password
-  //   };
-  //   axios.post("http://127.0.0.1:8000/api/login/", payload).then(res => {
-  //     console.log(res.data["token"]);
-  //     if ((res.status = 200)) {
-  //       props.auth.login(event, res.data);
-  //       props.history.push("/authenticationview");
-  //       // localStorage.setItem("token", res.data["token"]);
-  //     }
-  //   });
-  //   event.preventDefault();
-  // }
-
   function handleChange(event) {
     const value = event.target.value;
     setState({

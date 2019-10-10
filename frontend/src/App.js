@@ -21,12 +21,12 @@ class App extends Component {
   }
 
   componentWillMount() {
-    console.log("component");
+    console.log("componentWillMount App");
     if (this.state.logged_in) {
       if (this.state.username) {
         history.push("/authenticatedview");
       }
-      console.log("Component Will mount");
+      history.push("/authenticatedview");
       axios
         .get("http://localhost:8000/api/authview/", {
           headers: {
@@ -39,7 +39,8 @@ class App extends Component {
           });
         });
     } else {
-      history.push("/");
+      if (window.location.pathname == "/signup") history.push("/signup");
+      else history.push("/");
     }
   }
 
@@ -55,9 +56,7 @@ class App extends Component {
       username: UserName,
       password: PassWord
     };
-    console.log("ASS");
     axios.post("http://127.0.0.1:8000/api/login/", payload).then(res => {
-      console.log(res.data["token"]);
       if ((res.status = 200)) {
         localStorage.setItem("token", res.data["token"]);
         this.setState({
@@ -83,7 +82,7 @@ class App extends Component {
               />
             )}
           />
-          <Route exact path="/signup" component={SignUp} props={this.props} />
+          <Route exact path="/signup" render={props => <SignUp {...props} />} />
           <Route
             exact
             path="/authenticatedview"
