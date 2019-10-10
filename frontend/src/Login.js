@@ -57,7 +57,7 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-export default function Login(props) {
+const Login = props => {
   const [state, setState] = React.useState({
     username: "",
     password: ""
@@ -91,6 +91,12 @@ export default function Login(props) {
     });
   }
 
+  function handle_login(event) {
+    console.log(props);
+    event.preventDefault();
+    props.login(state.username, state.password);
+  }
+
   const classes = useStyles();
   return (
     <Grid container component="main" className={classes.root}>
@@ -104,11 +110,7 @@ export default function Login(props) {
           <Typography component="h1" variant="h5">
             Sign in
           </Typography>
-          <form
-            className={classes.form}
-            onSubmit={e => props.login(e, state)}
-            noValidate
-          >
+          <form className={classes.form} onSubmit={handle_login} noValidate>
             <TextField
               variant="outlined"
               margin="normal"
@@ -168,10 +170,12 @@ export default function Login(props) {
       </Grid>
     </Grid>
   );
-}
+};
 
 Login.propTypes = {
   logged_in: PropTypes.bool.isRequired,
   username: PropTypes.string.isRequired,
   login: PropTypes.func.isRequired
 };
+
+export default Login;

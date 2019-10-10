@@ -13,13 +13,20 @@ class App extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      username: "",
+      username: "sas",
       logged_in: localStorage.getItem("token") ? true : false
     };
+    this.login = this.login.bind(this);
+    this.logout = this.logout.bind(this);
   }
 
-  componentDidMount() {
+  componentWillMount() {
+    console.log("component");
     if (this.state.logged_in) {
+      if (this.state.username) {
+        history.push("/authenticatedview");
+      }
+      console.log("Component Will mount");
       axios
         .get("http://localhost:8000/api/authview/", {
           headers: {
@@ -27,8 +34,9 @@ class App extends Component {
           }
         })
         .then(res => {
-          this.state.username = res.data["username"];
-          history.push("/authenticationview");
+          this.setState({
+            username: res.data["username"]
+          });
         });
     } else {
       history.push("/");
@@ -36,15 +44,16 @@ class App extends Component {
   }
 
   logout = () => {
+    console.log("Logout Called");
     localStorage.removeItem("token");
     this.setState({ logged_in: false, username: "" });
   };
 
-  login = (e, data) => {
-    e.preventDefault();
+  login = (UserName, PassWord) => {
+    console.log("Login Called");
     var payload = {
-      username: data.username,
-      password: data.password
+      username: UserName,
+      password: PassWord
     };
     console.log("ASS");
     axios.post("http://127.0.0.1:8000/api/login/", payload).then(res => {
@@ -53,7 +62,7 @@ class App extends Component {
         localStorage.setItem("token", res.data["token"]);
         this.setState({
           logged_in: true,
-          username: data.username
+          username: UserName
         });
       }
     });
@@ -66,17 +75,19 @@ class App extends Component {
           <Route
             exact
             path="/"
-            component={Login}
-            logged_in={this.state.logged_in}
-            username={this.state.username}
-            login={this.state.login}
+            render={props => (
+              <Login
+                logged_in={this.state.logged_in}
+                username={this.state.username}
+                login={this.login}
+              />
+            )}
           />
           <Route exact path="/signup" component={SignUp} props={this.props} />
           <Route
             exact
-            path="/authenticationview"
-            component={AuthenticatedPage}
-            logout={this.state.logout}
+            path="/authenticatedview"
+            render={props => <AuthenticatedPage logout={this.logout} />}
           />
         </BrowserRouter>
       </div>
