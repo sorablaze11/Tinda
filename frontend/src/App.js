@@ -6,6 +6,7 @@ import { Route, BrowserRouter } from "react-router-dom";
 import AuthenticatedPage from "./AuthenticatedPage";
 import { createBrowserHistory } from "history";
 import axios from "axios";
+import UserDetials from "./UserDetials.js";
 
 const history = createBrowserHistory();
 
@@ -18,6 +19,7 @@ class App extends Component {
     };
     this.login = this.login.bind(this);
     this.logout = this.logout.bind(this);
+    this.signup = this.signup.bind(this);
   }
 
   componentWillMount() {
@@ -43,6 +45,29 @@ class App extends Component {
       else history.push("/");
     }
   }
+
+  componentDidMount() {}
+
+  signup = (UserName, Email, PassWord) => {
+    console.log("SignUp Called");
+    var payload = {
+      username: UserName,
+      email: Email,
+      password: PassWord
+    };
+    axios.post("http://127.0.0.1:8000/api/register/", payload).then(res => {
+      console.log(res);
+      if (res.status == 201) {
+        localStorage.setItem("token", res.data["token"]);
+        this.setState({
+          logged_in: true,
+          username: UserName
+        });
+      } else {
+        alert("Error while registering");
+      }
+    });
+  };
 
   logout = () => {
     console.log("Logout Called");
@@ -82,12 +107,17 @@ class App extends Component {
               />
             )}
           />
-          <Route exact path="/signup" render={props => <SignUp {...props} />} />
+          <Route
+            exact
+            path="/signup"
+            render={props => <SignUp signup={this.signup} />}
+          />
           <Route
             exact
             path="/authenticatedview"
             render={props => <AuthenticatedPage logout={this.logout} />}
           />
+          <Route exact path="/userdetials" render={props => <UserDetials />} />
         </BrowserRouter>
       </div>
     );

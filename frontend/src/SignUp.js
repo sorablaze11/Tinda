@@ -53,8 +53,27 @@ const useStyles = makeStyles(theme => ({
 }));
 
 export default function SignUp(props) {
+  const [state, setState] = React.useState({
+    username: "",
+    email: "",
+    password: ""
+  });
+
+  function handleChange(event) {
+    const value = event.target.value;
+    setState({
+      ...state,
+      [event.target.name]: value
+    });
+  }
+
   const classes = useStyles();
-  console.log("SAS");
+
+  function handle_signup(event) {
+    console.log(props);
+    event.preventDefault();
+    props.signup(state.username, state.email, state.password);
+  }
 
   return (
     <Container component="main" maxWidth="xs">
@@ -66,29 +85,20 @@ export default function SignUp(props) {
         <Typography component="h1" variant="h5">
           Sign up
         </Typography>
-        <form className={classes.form} noValidate>
+        <form className={classes.form} onSubmit={handle_signup} noValidate>
           <Grid container spacing={2}>
-            <Grid item xs={12} sm={6}>
+            <Grid item xs={12}>
               <TextField
-                autoComplete="fname"
-                name="firstName"
+                autoComplete="username"
+                name="username"
                 variant="outlined"
                 required
                 fullWidth
-                id="firstName"
-                label="First Name"
+                id="username"
+                label="Username"
+                value={state.username}
+                onChange={handleChange}
                 autoFocus
-              />
-            </Grid>
-            <Grid item xs={12} sm={6}>
-              <TextField
-                variant="outlined"
-                required
-                fullWidth
-                id="lastName"
-                label="Last Name"
-                name="lastName"
-                autoComplete="lname"
               />
             </Grid>
             <Grid item xs={12}>
@@ -97,6 +107,8 @@ export default function SignUp(props) {
                 required
                 fullWidth
                 id="email"
+                value={state.email}
+                onChange={handleChange}
                 label="Email Address"
                 name="email"
                 autoComplete="email"
@@ -106,6 +118,8 @@ export default function SignUp(props) {
               <TextField
                 variant="outlined"
                 required
+                value={state.password}
+                onChange={handleChange}
                 fullWidth
                 name="password"
                 label="Password"
