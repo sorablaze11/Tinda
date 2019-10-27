@@ -1,12 +1,12 @@
 import React, { Component } from "react";
 import "./App.css";
-import Login from "./Login";
-import SignUp from "./SignUp";
+import Login from "./Components/Login";
+import SignUp from "./Components/SignUp";
 import { Route, BrowserRouter } from "react-router-dom";
-import AuthenticatedPage from "./AuthenticatedPage";
+import AuthenticatedPage from "./Components/AuthenticatedPage";
 import { createBrowserHistory } from "history";
 import axios from "axios";
-import UserDetials from "./UserDetials.js";
+import UserDetials from "./Components/UserDetials.js";
 
 const history = createBrowserHistory();
 
