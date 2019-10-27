@@ -1,14 +1,11 @@
 import React, { Component } from "react";
 import "./App.css";
-import Login from "./Components/Login";
-import SignUp from "./Components/SignUp";
+import Login from "./Components/Login.js";
+import SignUp from "./Components/SignUp.js";
 import { Route, BrowserRouter } from "react-router-dom";
-import AuthenticatedPage from "./Components/AuthenticatedPage";
-import { createBrowserHistory } from "history";
+import AuthenticatedPage from "./Components/AuthenticatedPage.js";
 import axios from "axios";
-import UserDetials from "./Components/UserDetials.js";
-
-const history = createBrowserHistory();
+import PrivateRoute from "./PrivateRoute.js";
 
 class App extends Component {
   constructor(props) {
@@ -22,32 +19,6 @@ class App extends Component {
     this.signup = this.signup.bind(this);
   }
 
-  componentWillMount() {
-    console.log("componentWillMount App");
-    if (this.state.logged_in) {
-      if (this.state.username) {
-        history.push("/authenticatedview");
-      }
-      history.push("/authenticatedview");
-      axios
-        .get("http://localhost:8000/api/authview/", {
-          headers: {
-            Authorization: `Token ${localStorage.getItem("token")}`
-          }
-        })
-        .then(res => {
-          this.setState({
-            username: res.data["username"]
-          });
-        });
-    } else {
-      if (window.location.pathname == "/signup") history.push("/signup");
-      else history.push("/");
-    }
-  }
-
-  componentDidMount() {}
-
   signup = (UserName, Email, PassWord) => {
     console.log("SignUp Called");
     var payload = {
@@ -57,7 +28,7 @@ class App extends Component {
     };
     axios.post("http://127.0.0.1:8000/api/register/", payload).then(res => {
       console.log(res);
-      if (res.status == 201) {
+      if (res.status === 201) {
         localStorage.setItem("token", res.data["token"]);
         this.setState({
           logged_in: true,
@@ -95,7 +66,7 @@ class App extends Component {
   render() {
     return (
       <div>
-        <BrowserRouter history={history}>
+        <BrowserRouter>
           <Route
             exact
             path="/"
@@ -104,20 +75,34 @@ class App extends Component {
                 logged_in={this.state.logged_in}
                 username={this.state.username}
                 login={this.login}
+                {...props}
+              />
+            )}
+          />
+          <Route
+            exact
+            path="/login"
+            render={props => (
+              <Login
+                logged_in={this.state.logged_in}
+                username={this.state.username}
+                login={this.login}
+                {...props}
               />
             )}
           />
           <Route
             exact
             path="/signup"
-            render={props => <SignUp signup={this.signup} />}
+            render={props => <SignUp signup={this.signup} {...props} />}
           />
-          <Route
+          <PrivateRoute
             exact
             path="/authenticatedview"
-            render={props => <AuthenticatedPage logout={this.logout} />}
+            render={props => <AuthenticatedPage {...props} />}
+            logged_in={this.state.logged_in}
+            logout={this.logout}
           />
-          <Route exact path="/userdetials" render={props => <UserDetials />} />
         </BrowserRouter>
       </div>
     );

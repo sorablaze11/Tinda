@@ -12,7 +12,7 @@ import Grid from "@material-ui/core/Grid";
 import LockOutlinedIcon from "@material-ui/icons/LockOutlined";
 import Typography from "@material-ui/core/Typography";
 import { makeStyles } from "@material-ui/core/styles";
-import axios from "axios";
+
 import PropTypes from "prop-types";
 
 function Copyright() {
@@ -64,6 +64,7 @@ const Login = props => {
   });
 
   useEffect(() => {
+    console.log(props);
     if (props.logged_in) props.history.push("/authenticatedview");
   }, []);
 

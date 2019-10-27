@@ -1,10 +1,13 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 
-export class AuthenticatedPage extends Component {
+class AuthenticatedPage extends Component {
   componentWillMount() {
     console.log("componentWillMount AuthenticatedApp");
+    console.log(this.props);
+    console.log("componentWillMount AuthenticatedApp");
   }
+
   render() {
     return (
       <div>
@@ -15,8 +18,8 @@ export class AuthenticatedPage extends Component {
   }
 }
 
-export default AuthenticatedPage;
-
 AuthenticatedPage.propTypes = {
   logout: PropTypes.func.isRequired
 };
+
+export default AuthenticatedPage;
